@@ -4,25 +4,12 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-#include <filesystem>
 
 using namespace std;
 
-class UTILS_FEDE {
-private:
-    
+namespace UTILS_FEDE {
 
-public:
-    
-    static int PrintValStatic(int backCounts, string text) {
-        for(; backCounts > 0; backCounts--) {
-            cout << "\b \b"; // Erase a char
-        }
-        cout << text;
-        return text.length();
-    };
-
-    static bool LoadParams(string* params, string filePath, int numParams) {
+    bool LoadParams(string* params, string filePath, int numParams) {
         /*
         The format is "...:(space)value(line break)"
         Exms: 
@@ -67,7 +54,7 @@ public:
         
         return true;
     };
-    static streampos ObtainLastPosFile(string filePath) {
+    streampos ObtainLastPosFile(string filePath) {
         streampos lastPosFile;
         ifstream inFile(filePath);
         if(!inFile) {
@@ -79,18 +66,18 @@ public:
         inFile.close();
         return lastPosFile;
     };
-    static string FloatToString(float num, int precision) {
+    string FloatToString(float num, int precision) {
         ostringstream oString;
         oString << std::setprecision(precision) << (num);
         return oString.str();
     };
-    static ofstream OutInLastPos(string filePath) { // Be carefull, you must close ofstream.
+    ofstream OutInLastPos(string filePath) { // Be carefull, you must close ofstream.
         streampos lastPosFile = ObtainLastPosFile(filePath);
         ofstream outFile(filePath, ios::out | ios::in); // ios::out | ios::in avoid to erase contenent of file.
         outFile.seekp(lastPosFile);
         return outFile;
     };
-    static string CppVersion() {
+    string CppVersion() {
         long standard = __cplusplus;
         string version;
         if (standard == 199711L) version = "C++98/C++03";
@@ -103,19 +90,12 @@ public:
         else version = "Previous to C++98 or custom: " + to_string(standard) + " standard";
         return version;
     };
-    static bool ExistPath(string path) {
-        filesystem::path fileOrDirectory(path);
-        if(filesystem::exists(fileOrDirectory)) return true;
-        else return false;
-    };
-    static bool CreateDirIfNoExist(string pathFolder) // The path must be ended with '/'.
-    {
-        filesystem::path directory(pathFolder);
-        if(!filesystem::exists(directory)) {
-            filesystem::create_directory(directory.parent_path());
-            return true;
-        } else return false;
-
+    float* Copy1DfloatArray(const float* array, size_t size) {
+        float* copy = new float[size];
+        for(int n = 0; n < size; n++) {
+            copy[n] = array[n];
+        }
+        return copy;
     }
 };
 class RANDOM_FEDE {
